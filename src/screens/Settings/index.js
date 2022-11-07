@@ -80,6 +80,7 @@ const Settings = (props) => {
           <Icon name="arrow-forward-ios" size={20} color={Colors.grey} />
         </TouchableOpacity>
         <TouchableOpacity
+          onPress={() => navigation.navigate('HelpScreen')}
           style={styles.btnAbout}
         >
           <Text style={styles.btnAboutText}>Ajuda</Text>

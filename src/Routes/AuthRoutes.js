@@ -24,6 +24,7 @@ import NewProduct from '../screens/SellerScreens/NewProduct';
 import MainSeller from '../screens/SellerScreens/MainSeller';
 
 //SCREENS DEFAULT
+import HelpScreen from '../screens/HelpScreen';
 import CustomDrawer from '../components/CustomDrawer';
 import Profile from '../screens/Profile';
 import ProductItem from '../screens/ProductItem';
@@ -171,6 +172,7 @@ const AuthRoutes = () => {
             <Stack.Screen name="SellerStore" component={SellerStore} />
             <Stack.Screen name="ResultSearch" component={ResultSearch} />
             <Stack.Screen name="MyAccount" component={Profile} />
+            <Stack.Screen name="HelpScreen" component={HelpScreen} />
       </Stack.Navigator>
     )
   );
