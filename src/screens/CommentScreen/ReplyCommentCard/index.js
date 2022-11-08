@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Colors from '../../../styles/Colors';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { useLogin } from '../../../context/LoginProvider';
 
-const ReplyCommentCard = ({data, onPress}) => {
+const ReplyCommentCard = ({data, onPress, onReportComment}) => {
     const {profile} = useLogin()
     const [height, setHeight] = useState(57);
     const avatar = 'https://res.cloudinary.com/gomesdev/image/upload/v1649718658/avatar_ip9qyt.png'
-    
+
     return (
         <>
         <View style={[styles.replyContainer, {height: height}]}>
@@ -21,12 +21,19 @@ const ReplyCommentCard = ({data, onPress}) => {
             <Text style={{color: Colors.primary, fontWeight: 'bold'}}>{data.sellerName}  </Text>
             <Text style={{color: Colors.primary}} numberOfLines={2}>{data.replyReview}</Text>
             </Text>
-            {profile._id === data.sellerId?._id && (
+            {profile._id === data.sellerId?._id ? (
                 <TouchableOpacity
                     onPress={onPress}
                     style={{alignItems: 'center', justifyContent: 'center'}}
                 >
                     <Icon name="close" size={24} color={Colors.primary} />
+                </TouchableOpacity>
+            ): (
+                <TouchableOpacity
+                    onPress={onReportComment}
+                    style={{alignItems: 'center', justifyContent: 'center'}}
+                >
+                    <Icon name="error-outline" size={24} color={Colors.danger} />
                 </TouchableOpacity>
             )}
         </View>

@@ -21,10 +21,12 @@ import {useLogin} from '../../../context/LoginProvider';
 import {heightPercent} from '../../../utils/dimensions';
 import {isValidEmail} from '../../../utils/validators';
 import {storeData} from '../../../utils/storage';
+import { useNavigation } from '@react-navigation/native';
 
-const SellerLogin = ({navigation}) => {
-  const {setIsLoggedIn, setProfile} = useLogin();
+const SellerLogin = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation()
+  const {setIsLoggedIn, setProfile} = useLogin();
   const [load, setLoad] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -123,7 +125,10 @@ const SellerLogin = ({navigation}) => {
             iconName={'lock'}
             secureTextEntry
           />
-          <TouchableOpacity style={styles.forgotBtn}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ForgotPasswordSeller')}
+            style={styles.forgotBtn}
+          >
             <Text style={styles.forgotBtnText}>Esqueceu a senha?</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={signIn} style={styles.btn}>

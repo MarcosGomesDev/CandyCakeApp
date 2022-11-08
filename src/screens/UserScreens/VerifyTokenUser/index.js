@@ -1,17 +1,17 @@
 
-import React, {useRef, useState, useEffect} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
+import React, { useRef, useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
-import { showToast } from '../../store/modules/toast/actions';
-import { api } from '../../services/api';
-import Container from '../../components/core/Container'
-import Colors from '../../styles/Colors';
+import { showToast } from '../../../store/modules/toast/actions';
+import { api } from '../../../services/api';
+import Container from '../../../components/core/Container'
+import Colors from '../../../styles/Colors';
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { heightPercent } from '../../utils/dimensions';
+import { heightPercent } from '../../../utils/dimensions';
 
-const VerifyToken = ({route}) => {
+const VerifyTokenUser = ({ route }) => {
     let email = route.params
     console.log(email)
     const dispatch = useDispatch()
@@ -32,10 +32,6 @@ const VerifyToken = ({route}) => {
             clearInterval(clockCall)
         }
     }, [countDown])
-
-    // useEffect(() => {
-    //     textInputRef.current.focus()
-    // }, [])
 
     const firstInput = useRef()
     const secondInput = useRef()
@@ -58,39 +54,41 @@ const VerifyToken = ({route}) => {
             setCountDown(0)
             clearInterval(clockCall)
         } else {
-            setCountDown((prev) => prev-1)
+            setCountDown((prev) => prev - 1)
         }
     }
 
     const sendToken = async () => {
-        if(token.length === 6) {
-            
-                await api.verifyUserTokenPasswordReset(email, token).then((data) => {
-                    dispatch(showToast(data, 'success', 'done'))
+        if (token.length === 6) {
+
+            await api.verifyUserTokenPasswordReset(email, token)
+            .then((data) => {
+                dispatch(showToast(data, 'success', 'done'))
                 navigation.navigate('ResetPassword', token)
-                }).catch((error) => {
-                    dispatch(showToast(error.response.data, 'error', 'error'))
-                })
+            }).catch((error) => {
+                dispatch(showToast(error.response.data, 'error', 'error'))
+            })
         } else {
             dispatch(showToast('token inválido, por favor preencha corretamente', 'error', 'error'))
         }
     }
 
     const onResendOTP = async () => {
-        if(enableResend) {
+        if (enableResend) {
             setCountDown(defaultCountDown)
             setEnableResend(false)
             clearInterval(clockCall)
             clockCall = setInterval(() => {
                 decrementClock()
             }, 1000)
-            try {
-                const response = await api.post('/forgot-password', {email})
-                dispatch(showToast(response.data, 'success', 'email'))
-    
-            } catch (error) {
+
+            await api.userForgotPassword(email)
+            .then((data) => {
+                dispatch(showToast(data, 'success', 'done'))
+                navigation.navigate('ResetPassword', token)
+            }).catch((error) => {
                 dispatch(showToast(error.response.data, 'error', 'error'))
-            }
+            })
         }
     }
 
@@ -181,63 +179,29 @@ const VerifyToken = ({route}) => {
                 </View>
             </View>
 
-                {/* <View>
-                    <TextInput
-                        ref={textInputRef}
-                        onChangeText={onChangeText}
-                        style={{width: 0, height: 0}}
-                        value={internalVal}
-                        maxLength={lengthInput}
-                        keyboardType="numeric"
-                    />
-                    <View style={styles.containerInput}>
-                        {
-                            Array(lengthInput).fill().map((data, index) => (
-                                <View
-                                    key={index}
-                                    style={[
-                                        styles.cellView,
-                                        {
-                                            borderBottomColor: index === internalVal.length ? Colors.danger : Colors.primary,
-                                        }
-                                    ]}
-                                >
-                                    <Text
-                                        style={styles.cellText}
-                                        onPress={() => textInputRef.current.focus()}
-                                    >
-                                        {internalVal && internalVal.length > 0 ? internalVal[index] : ''}
-                                    </Text>
-                                </View>
-                            ))
-                        }
-                    </View>
-                </View> */}
-
-                
-                <View style={styles.content}>
-                    <View style={styles.bottomView}>
-                        <TouchableOpacity onPress={sendToken}>
-                            <View style={styles.btnChangeNumber}>
-                                <Text style={styles.textChange}>Enviar</Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={onResendOTP}>
-                            <View style={styles.btnResend}>
-                                <Text
-                                    style={[
-                                        styles.textResend,
-                                        {
-                                            color: enableResend ? Colors.primary : 'gray',
-                                        }
-                                    ]}
-                                >
-                                    Reenviar código ({countDown})
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
+            <View style={styles.content}>
+                <View style={styles.bottomView}>
+                    <TouchableOpacity onPress={sendToken}>
+                        <View style={styles.btnChangeNumber}>
+                            <Text style={styles.textChange}>Enviar</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={onResendOTP}>
+                        <View style={styles.btnResend}>
+                            <Text
+                                style={[
+                                    styles.textResend,
+                                    {
+                                        color: enableResend ? Colors.primary : 'gray',
+                                    }
+                                ]}
+                            >
+                                Reenviar código ({countDown})
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
                 </View>
+            </View>
         </Container>
     );
 };
@@ -318,7 +282,7 @@ const styles = StyleSheet.create({
     },
     textResend: {
         alignItems: 'center',
-        fontSize: 16    
+        fontSize: 16
     },
     otpContainer: {
         marginHorizontal: 20,
@@ -342,4 +306,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default VerifyToken;
+export default VerifyTokenUser;

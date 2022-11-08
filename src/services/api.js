@@ -15,6 +15,12 @@ async function registerUser(name, email, password) {
   return response.data
 }
 
+async function updateUser(data) {
+  const response = await axios.post(`${URL}/user/update`, data)
+
+  return response.data
+}
+
 async function userForgotPassword(email) {
   const response = await axios.post(`${URL}/user/forgot-password`, {email});
 
@@ -115,6 +121,16 @@ async function registerSeller(data) {
   return response.data
 }
 
+async function updateSeller(token, data) {
+  const response = await axios.post(`${URL}/seller/update`, data, {
+    headers: {
+      authorization: `Bearer ${token}`
+    }
+  })
+
+  return response.data
+}
+
 async function getAllProductsSeller(token) {
   const response = await axios.get(`${URL}/seller/products`, {headers: {authorization: `Bearer ${token}`}})
 
@@ -128,13 +144,21 @@ async function sellerForgotPassword(email) {
 }
 
 async function verifySellerTokenPasswordReset(email, token) {
-  const response = await axios.post(`${URL}/seller/verify-token`, {params: {email: email}}, {token: token})
+  const data = {
+    email: email,
+    token: token
+  }
+
+  const response = await axios.post(`${URL}/seller/verify-token`, data)
 
   return response.data
 }
 
 async function sellerResetPassword(token, password) {
-  const response = await axios.post(`${URL}/seller/reset-password`, {params: {token: token}}, {password})
+  const data = {
+    password: password
+  }
+  const response = await axios.post(`${URL}/seller/reset-password/${token}`, data)
 
   return response.data
 }
@@ -351,5 +375,7 @@ export const api = {
   getAllSubCategories,
   getAllProductsSeller,
   getAllCategories,
-  searchProducts
+  searchProducts,
+  updateSeller,
+  updateUser
 }

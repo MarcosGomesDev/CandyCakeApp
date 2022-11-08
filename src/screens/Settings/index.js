@@ -67,7 +67,7 @@ const Settings = (props) => {
 
 
         <TouchableOpacity
-          onPress={() => navigation.navigate('MyAccount')}
+          onPress={() => navigation.navigate('Profile')}
           style={styles.btnAbout}
         >
           <Text style={styles.btnAboutText}>Meus dados</Text>

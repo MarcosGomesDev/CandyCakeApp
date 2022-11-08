@@ -93,6 +93,10 @@ const ModalComment = ({route}) => {
     setReplyTo('')
   }
 
+  const reportComment = async () => {
+
+  }
+
   return (
     <Container color={'#fff'}>
         <View style={styles.header}>
@@ -118,6 +122,7 @@ const ModalComment = ({route}) => {
                 data={comment}
                 replyComment={() => reply(comment._id, comment.userName)}
                 onRemoveComment={() => deleteComment()}
+                onReportComment={() => {}}
               />
             )}): null}
         </ScrollView>

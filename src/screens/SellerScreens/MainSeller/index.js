@@ -5,7 +5,7 @@ import {
   ScrollView,
   View,
   TouchableOpacity,
-  RefreshControl,
+  Alert,
   StyleSheet,
   Text,
   ActivityIndicator,
@@ -43,6 +43,22 @@ const Products = (props) => {
     }
   })
 
+  const verifyMediaEnabled = () => {
+    if(profile.socialMedias.length < 1) {
+      Alert.alert('Você não possuí nenhum contato cadastrado',
+        'Você precisa ao menos do número do whatsapp cadastrado para criar um produto',
+        [
+          {
+            text: 'OK',
+            onPress: () => navigation.navigate('Profile')
+          }
+        ]
+      )
+    } else {
+      navigation.navigate('NewProduct')
+    }
+  }
+
   return (
     <Container>
       <View style={styles.header}>
@@ -65,7 +81,7 @@ const Products = (props) => {
     <View style={styles.addContainer}>
       <TouchableOpacity
         style={styles.addBtn}
-        onPress={() => navigation.navigate('NewProduct')}>
+        onPress={() => verifyMediaEnabled()}>
         <Icon name="add" size={24} color={Colors.white} />
       </TouchableOpacity>
       </View>

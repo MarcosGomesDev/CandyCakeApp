@@ -3,13 +3,17 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import UserLogin from '../screens/UserScreens/Login';
 import UserRegister from '../screens/UserScreens/UserRegister';
+import ForgotPasswordUser from '../screens/UserScreens/ForgotPasswordUser';
+import VerifyTokenUser from '../screens/UserScreens/VerifyTokenUser';
+import ResetPasswordUser from '../screens/UserScreens/ResetPasswordUser';
+
 import SellerLogin from '../screens/SellerScreens/SellerLogin';
 import SellerRegister from '../screens/SellerScreens/SellerRegister/index';
 import AddressInfo from '../screens/SellerScreens/SellerRegister/AddressInfo';
 import EmailInfo from '../screens/SellerScreens/SellerRegister/EmailInfo';
-import ForgotPassword from '../screens/ForgotPassword';
-import VerifyToken from '../screens/VerifyToken';
-import ResetPassword from '../screens/ResetPassword';
+import ForgotPasswordSeller from '../screens/SellerScreens/ForgotPasswordSeller';
+import VerifyTokenSeller from '../screens/SellerScreens/VerifyTokenSeller';
+import ResetPasswordSeller from '../screens/SellerScreens/ResetPasswordSeller';
 
 const Stack = createStackNavigator();
 
@@ -25,9 +29,12 @@ export function AppStack() {
       <Stack.Screen name="EmailInfo" component={EmailInfo} />
       <Stack.Screen name="SellerLogin" component={SellerLogin} />
       <Stack.Screen name="SellerRegister" component={SellerRegister} />
-      <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
-      <Stack.Screen name="VerifyToken" component={VerifyToken} />
-      <Stack.Screen name="ResetPassword" component={ResetPassword} />
+      <Stack.Screen name="ForgotPasswordUser" component={ForgotPasswordUser} />
+      <Stack.Screen name="VerifyTokenUser" component={VerifyTokenUser} />
+      <Stack.Screen name="ResetPasswordUser" component={ResetPasswordUser} />
+      <Stack.Screen name="ForgotPasswordSeller" component={ForgotPasswordSeller} />
+      <Stack.Screen name="VerifyTokenSeller" component={VerifyTokenSeller} />
+      <Stack.Screen name="ResetPasswordSeller" component={ResetPasswordSeller} />
     </Stack.Navigator>
   );
 }

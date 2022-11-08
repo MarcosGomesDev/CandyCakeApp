@@ -171,7 +171,7 @@ const AuthRoutes = () => {
             <Stack.Screen name="CommentScreen" component={CommentScreen} />
             <Stack.Screen name="SellerStore" component={SellerStore} />
             <Stack.Screen name="ResultSearch" component={ResultSearch} />
-            <Stack.Screen name="MyAccount" component={Profile} />
+            <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="HelpScreen" component={HelpScreen} />
       </Stack.Navigator>
     )

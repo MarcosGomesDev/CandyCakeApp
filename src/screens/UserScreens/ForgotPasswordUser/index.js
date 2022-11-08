@@ -9,17 +9,17 @@ import {
 
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
-import {showToast} from '../../store/modules/toast/actions';
-import {isValidEmail} from '../../utils/validators';
+import {showToast} from '../../../store/modules/toast/actions';
+import {isValidEmail} from '../../../utils/validators';
 
-import Container from '../../components/core/Container';
+import Container from '../../../components/core/Container';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import Colors from '../../styles/Colors';
-import Input from '../../components/Input';
-import {api} from '../../services/api';
-import {heightPercent} from '../../utils/dimensions';
+import Colors from '../../../styles/Colors';
+import Input from '../../../components/Input';
+import {api} from '../../../services/api';
+import {heightPercent} from '../../../utils/dimensions';
 
-const ForgotPassword = () => {
+const ForgotPasswordUser = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
@@ -48,7 +48,8 @@ const ForgotPassword = () => {
       return;
     }
 
-      await api.userForgotPassword(email).then((data) => {
+      await api.userForgotPassword(email)
+      .then((data) => {
         dispatch(showToast(data, 'success', 'email'));
         setIsLoading(false);
         setTimeout(() => {
@@ -145,4 +146,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ForgotPassword;
+export default ForgotPasswordUser;

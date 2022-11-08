@@ -3,15 +3,15 @@ import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'rea
 
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
-import { showToast } from '../../store/modules/toast/actions';
+import { showToast } from '../../../store/modules/toast/actions';
 
-import Container from '../../components/core/Container';
+import Container from '../../../components/core/Container';
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import Colors from '../../styles/Colors';
-import { api } from '../../services/api'
-import Input from '../../components/Input';
+import Colors from '../../../styles/Colors';
+import { api } from '../../../services/api'
+import Input from '../../../components/Input';
 
-const ResetPassword = ({ route }) => {
+const ResetPasswordUser = ({ route }) => {
     const dispatch = useDispatch()
     const navigation = useNavigation()
     const token = route.params
@@ -40,17 +40,17 @@ const ResetPassword = ({ route }) => {
 
         setIsLoading(true)
         await api.userResetPassword(token, password)
-            .then((data) => {
-                setIsLoading(false)
-                dispatch(showToast(data, 'success', 'done'))
-                setTimeout(() => {
-                    navigation.navigate('Login')
-                }, 1000);
-            })
-            .catch((error) => {
-                setIsLoading(false)
-                dispatch(showToast(error.response.data, 'error', 'error'))
-            })
+        .then((data) => {
+            setIsLoading(false)
+            dispatch(showToast(data, 'success', 'done'))
+            setTimeout(() => {
+                navigation.navigate('Login')
+            }, 1000);
+        })
+        .catch((error) => {
+            setIsLoading(false)
+            dispatch(showToast(error.response.data, 'error', 'error'))
+        })
     }
 
     return (
@@ -157,4 +157,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ResetPassword;
+export default ResetPasswordUser;

@@ -8,7 +8,7 @@ import ReplyCommentCard from '../ReplyCommentCard';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../../../services/api';
 
-const commentCard = ({data, replyComment, onRemoveComment}) => {
+const commentCard = ({data, replyComment, onRemoveComment, onReportComment}) => {
     const [maxRating, setMaxRating] = useState([1,2,3,4,5])
     const rating = data.productRating
     const avatar = 'https://res.cloudinary.com/gomesdev/image/upload/v1649718658/avatar_ip9qyt.png'
@@ -19,11 +19,14 @@ const commentCard = ({data, replyComment, onRemoveComment}) => {
     
     const {mutate} = useMutation(() => api.deleteReplyComment(data._id, profile.token), {
         onSuccess: () => {
-            console.log('excluiu')
             queryClient.invalidateQueries(['comment-list'])
             queryClient.invalidateQueries(['product'])
         }
     })
+
+    const reportComment = async (id) => {
+        console.log(id)
+    }
 
     return (
         <>
@@ -64,13 +67,20 @@ const commentCard = ({data, replyComment, onRemoveComment}) => {
                             </View>
                         </View>
                     </View>
-                    {profile._id === data.userId._id && (
+                    {profile._id === data.userId._id ? (
                         <TouchableOpacity
                             onPress={onRemoveComment}
                             style={{alignItems: 'center', justifyContent: 'center'}}
                         >
                             <Icon name="close" size={24} color={Colors.primary} />
                         </TouchableOpacity>
+                    ): (
+                        <TouchableOpacity
+                        onPress={onReportComment}
+                        style={{alignItems: 'center', justifyContent: 'center'}}
+                    >
+                        <Icon name="error-outline" size={24} color={Colors.primary} />
+                    </TouchableOpacity> 
                     )}
                 </View>
                 {profile.seller === true && (
@@ -89,6 +99,7 @@ const commentCard = ({data, replyComment, onRemoveComment}) => {
                     key={item}
                     data={item}
                     onPress={() => mutate()}
+                    onReportComment={() => reportComment(item._id)}
                 />
             )
         }): null}

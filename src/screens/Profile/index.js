@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -11,33 +11,37 @@ import {
   ActivityIndicator,
   Modal,
 } from 'react-native';
-import {DrawerActions} from '@react-navigation/native';
-import {showToast} from '../../store/modules/toast/actions';
-import {useDispatch} from 'react-redux';
+import { showToast } from '../../store/modules/toast/actions';
+import { useDispatch } from 'react-redux';
 import * as ImagePicker from 'react-native-image-picker';
 
 import Container from '../../components/core/Container';
 import Input from '../../components/Input';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Colors from '../../styles/Colors';
-import {useLogin} from '../../context/LoginProvider';
-import {storeData, removeData} from '../../utils/storage';
-import {URL} from '@env';
+import { useLogin } from '../../context/LoginProvider';
+import { storeData, removeData } from '../../utils/storage';
+import { api } from '../../services/api';
+import { URL } from '@env';
+import { useNavigation } from '@react-navigation/native';
 
-const Profile = props => {
+const Profile = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation()
   const avatarDefault = 'https://res.cloudinary.com/gomesdev/image/upload/v1649718658/avatar_ip9qyt.png'
-  const {setIsLoggedIn, setProfile, profile} = useLogin();
+  const { setIsLoggedIn, setProfile, profile } = useLogin();
   const [modalVisible, setModalVisible] = useState(false);
   const [avatar, setAvatar] = useState({});
   const [loading, setLoading] = useState(false);
+
   const [name, setName] = useState(profile.name)
-  const [lastname, setLastname] = useState(profile.lastname)
+  const [lastname, setLastname] = useState(profile.lastName ?? '')
   const [email, setEmail] = useState(profile.email)
-  const [phone, setPhone] = useState(profile.socialmedias)
-  const [facebook, setFacebook] = useState(profile.socialmedias)
-  const [instagram, setInstagram] = useState(profile.socialmedias)
-  
+  const [storeName, setStoreName] = useState(profile.storeName ?? '')
+  const [phone, setPhone] = useState(profile.socialMedias[0].whatsapp ?? '')
+  const [facebook, setFacebook] = useState(profile.socialMedias[0].facebook ?? '')
+  const [instagram, setInstagram] = useState(profile.socialMedias[0].instagram ?? '')
+
   const options = {
     selectionLimit: 1,
     mediaType: 'photo',
@@ -82,7 +86,7 @@ const Profile = props => {
 
     if (response.status === 201) {
       setLoading(false);
-      const userInfo = {...profile, avatar: res.avatar};
+      const userInfo = { ...profile, avatar: res.avatar };
       await storeData(userInfo);
       setProfile(userInfo);
       setModalVisible(false);
@@ -111,29 +115,81 @@ const Profile = props => {
     }
   };
 
+  const updateSellerData = async () => {
+    if(name === "") {
+      dispatch(showToast('O nome não pode ser vazio', "error", "error"))
+      return 
+    }
+
+    if(lastname === "") {
+      dispatch(showToast('O sobrenome não pode ser vazio', "error", "error"))
+      return 
+    }
+
+    if(email === "") {
+      dispatch(showToast('O e-mail não pode ser vazio', "error", "error"))
+      return 
+    }
+
+    if(storeName === "") {
+      dispatch(showToast('O nome da loja não pode ser vazio', "error", "error"))
+      return 
+    }
+
+    if(phone === "") {
+      dispatch(showToast('O celular não pode ser vazio', "error", "error"))
+      return 
+    }
+
+    const data = {
+      name: name,
+      lastName: lastname,
+      email: email,
+      storeName: storeName,
+      whatsapp: phone,
+      instagram: instagram,
+      facebook: facebook
+    }
+
+    await api.updateSeller(profile.token, data)
+    .then(async (data) => {
+      dispatch(showToast(data.message, 'success', 'done'))
+      await setProfile({
+        ...profile, 
+        name: name,
+        lastName: lastname,
+        email: email,
+        storeName: storeName,
+        socialMedias: data.socialMedias
+      })
+      navigation.goBack()
+    })
+    .catch((error) => {
+      console.log(error.response.status)
+      dispatch(showToast(error.response.data, 'error', 'error'))
+    })
+  }
 
   return (
     <Container color="#fff">
-      <View style={{backgroundColor: Colors.primary}}>
+      <View style={{ backgroundColor: Colors.primary }}>
         <View style={styles.header}>
           <TouchableOpacity
-            style={{padding: 20}}
+            style={{ padding: 20 }}
             onPress={() =>
-              props.navigation.goBack()
+              navigation.goBack()
             }>
             <Icon name="arrow-back" size={26} color={Colors.white} />
           </TouchableOpacity>
           <Text style={styles.title}>Editar Perfil</Text>
           <TouchableOpacity
-            style={{padding: 20}}
-            onPress={() =>
-              props.navigation.goBack()
-            }>
-            <Text style={{color: Colors.white, fontWeight: 'bold', fontSize: 16}}>Salvar</Text>
+            style={{ padding: 20 }}
+            onPress={() => updateSellerData()}>
+            <Text style={{ color: Colors.white, fontWeight: 'bold', fontSize: 16 }}>Salvar</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.profileContainer}>
-          <Image style={styles.profileImage} source={{uri: profile.avatar ?? avatarDefault}} />
+          <Image style={styles.profileImage} source={{ uri: profile.avatar ?? avatarDefault }} />
           <TouchableOpacity
             style={styles.editIcon}
             onPress={() => setModalVisible(true)}
@@ -147,7 +203,7 @@ const Profile = props => {
           <Text style={styles.username}>{profile.name}</Text>
         </View>
       </View>
-        <ScrollView>
+      <ScrollView>
         <View style={{
           paddingHorizontal: 20,
           paddingBottom: 30,
@@ -164,28 +220,41 @@ const Profile = props => {
             iconName="person"
             title="Sobrenome"
             defaultValue={lastname}
+            onChangeText={(text) => setLastname(text)}
           />
           <Input
             iconName="email"
             title="E-mail"
             defaultValue={email}
+            onChangeText={(text) => setEmail(text)}
           />
           {profile.seller === true && (
-          <>
-          <Input
-            iconName="phone"
-            title="Celular"
-            defaultValue={phone}
-          />
-          <Input
-            title="Facebook"
-            defaultValue={facebook}
-          />
-          <Input
-            title="Instagram"
-            defaultValue={instagram}
-          />
-          </>
+            <>
+              <Input
+                iconName="store"
+                title="Nome da loja"
+                defaultValue={storeName}
+                onChangeText={(text) => setStoreName(text)}
+              />
+              <Input
+                iconName="phone"
+                title="WhatsApp"
+                defaultValue={phone}
+                maxLength={14}
+                placeholder="11999999999"
+                onChangeText={(text) => setPhone(text)}
+              />
+              <Input
+                title="Facebook"
+                defaultValue={facebook}
+                onChangeText={(text) => setFacebook(text)}
+              />
+              <Input
+                title="Instagram"
+                value={instagram}
+                onChangeText={(text) => setInstagram(text)}
+              />
+            </>
           )}
         </View>
       </ScrollView>
@@ -206,9 +275,9 @@ const Profile = props => {
             <Image
               style={[
                 styles.profileImage,
-                {alignSelf: 'center', marginVertical: 20},
+                { alignSelf: 'center', marginVertical: 20 },
               ]}
-              source={{uri: profile?.avatar ?? avatarDefault}}
+              source={{ uri: profile?.avatar ?? avatarDefault }}
             />
             <TouchableOpacity
               onPress={() => handleImageUser()}
@@ -220,7 +289,7 @@ const Profile = props => {
                 marginVertical: 20,
                 borderRadius: 15,
               }}>
-              <Text style={[styles.btnTextModal, {fontSize: 14}]}>
+              <Text style={[styles.btnTextModal, { fontSize: 14 }]}>
                 Selecionar imagem
               </Text>
             </TouchableOpacity>
