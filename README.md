@@ -24,3 +24,20 @@
   <img src="https://user-images.githubusercontent.com/69877839/201481366-6beb1dc9-f78e-4eb8-a8ed-a2869c22d630.png" width="210" height="450" />
   <img src="https://user-images.githubusercontent.com/69877839/201481372-2d6f5b11-1aee-4602-8584-3d2962106b7b.png" width="210" height="450" />
 </div>
+
+### Telas do vendedor
+
+<div style="display: inline-block">
+  <img src="https://user-images.githubusercontent.com/69877839/201486023-8a60c20e-8288-413e-b8e4-86c80d6b09d7.png" width="210" height="450" />
+  <img src="https://user-images.githubusercontent.com/69877839/201486026-c362c0cc-2ac5-40c1-bc8b-2a1b2d276b04.png" width="210" height="450" />
+  <img src="https://user-images.githubusercontent.com/69877839/201486028-1e218523-5f27-4dd7-813f-e493a791a7ec.png" width="210" height="450" />
+  <img src="https://user-images.githubusercontent.com/69877839/201486029-7d531cba-6cf7-4211-bd89-d666a4a6ae26.png" width="210" height="450" />
+  <img src="https://user-images.githubusercontent.com/69877839/201486031-80623728-5130-49fb-8a2d-238e4041525a.png" width="210" height="450" />
+  <img src="https://user-images.githubusercontent.com/69877839/201486033-65567ebd-b50d-4ed2-ac9c-eab1e2e95c91.png" width="210" height="450" />
+  <img src="https://user-images.githubusercontent.com/69877839/201486035-65820c2f-929e-4a5a-b0f1-665c26af25ba.png" width="210" height="450" />
+  <img src="https://user-images.githubusercontent.com/69877839/201486037-e01d7a64-d7d8-49bd-8431-4df165f79368.png" width="210" height="450" />
+  <img src="https://user-images.githubusercontent.com/69877839/201486041-af430c0f-e499-49b7-afa4-509a2313a271.png" width="210" height="450" />
+  <img src="https://user-images.githubusercontent.com/69877839/201486043-6d31ca66-092c-4e97-91b7-74f0b223047f.png" width="210" height="450" />
+  <img src="https://user-images.githubusercontent.com/69877839/201486048-a57c807c-2b06-4707-8662-95860ec663ba.png" width="210" height="450" />
+  <img src="https://user-images.githubusercontent.com/69877839/201486049-e98bbbe5-d863-405b-bfba-7d3556aace20.png" width="210" height="450" />
+</div>
